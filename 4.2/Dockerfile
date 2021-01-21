@@ -98,11 +98,13 @@ RUN set -x \
 	&& rm -f /usr/local/bin/systemctl \
 	&& rm -rf /var/lib/apt/lists/* \
 	&& rm -rf /var/lib/mongodb \
-	&& mv /etc/mongod.conf /etc/mongod.conf.orig
+	&& rm /etc/mongod.conf 
+	
+COPY mongod.conf /etc/mongod.conf.orig
 
-RUN mkdir -p /data/db /data/configdb \
-	&& chown -R mongodb:mongodb /data/db /data/configdb
-VOLUME /data/db /data/configdb
+RUN mkdir -p /data/docker /data/dockercfg \
+	&& chown -R mongodb:mongodb /data/docker /data/dockercfg
+VOLUME /data/docker /data/dockercfg
 
 COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
